@@ -1,0 +1,26 @@
+{
+  "name": "Fossify-Clock Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  // Bind the local workspace into the container explicitly (fixes missing files on Windows/WSL)
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "vscode",
+  "mounts": [
+    {
+      "source": "fossify-fast-build",
+      "target": "/workspace/build-outputs",
+      "type": "volume"
+    }
+  ],
+  "containerEnv": {
+    "ANDROID_SDK_ROOT": "/home/vscode/android-sdk",
+    "JAVA_HOME": "/usr/lib/jvm/java-17-openjdk-amd64",
+    // This environment variable helps Gradle find the redirected path.
+    // Use a subdirectory so Gradle won't try to delete the mount root volume.
+    "GRADLE_PROJECT_BUILD_DIR": "/workspace/build-outputs/gradle"
+  },
+  "postCreateCommand": "bash ./.devcontainer/post-create.sh"
+}
