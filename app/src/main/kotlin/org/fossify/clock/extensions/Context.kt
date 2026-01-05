@@ -33,6 +33,7 @@ import org.fossify.clock.helpers.FORMAT_12H
 import org.fossify.clock.helpers.FORMAT_24H
 import org.fossify.clock.helpers.MyAnalogueTimeWidgetProvider
 import org.fossify.clock.helpers.MyDigitalTimeWidgetProvider
+import org.fossify.clock.helpers.MyDigitalTimeSecondsWidgetProvider
 import org.fossify.clock.helpers.NOTIFICATION_ID
 import org.fossify.clock.helpers.OPEN_ALARMS_TAB_INTENT_ID
 import org.fossify.clock.helpers.OPEN_STOPWATCH_TAB_INTENT_ID
@@ -290,6 +291,7 @@ fun Context.hideTimerNotification(timerId: Int) = hideNotification(timerId)
 
 fun Context.updateWidgets() {
     updateDigitalWidgets()
+    updateDigitalSecondsWidgets()
     updateAnalogueWidgets()
 }
 
@@ -316,6 +318,21 @@ fun Context.updateAnalogueWidgets() {
     if (widgetIds.isNotEmpty()) {
         val ids = intArrayOf(R.xml.widget_analogue_clock_info)
         Intent(applicationContext, MyAnalogueTimeWidgetProvider::class.java).apply {
+            action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+            sendBroadcast(this)
+        }
+    }
+}
+
+fun Context.updateDigitalSecondsWidgets() {
+    val component = ComponentName(applicationContext, MyDigitalTimeSecondsWidgetProvider::class.java)
+    val widgetIds = AppWidgetManager.getInstance(applicationContext)
+        ?.getAppWidgetIds(component) ?: return
+
+    if (widgetIds.isNotEmpty()) {
+        val ids = intArrayOf(R.xml.widget_digital_seconds_clock_info)
+        Intent(applicationContext, MyDigitalTimeSecondsWidgetProvider::class.java).apply {
             action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
             putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
             sendBroadcast(this)
