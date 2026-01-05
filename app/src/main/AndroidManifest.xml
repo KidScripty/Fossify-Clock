@@ -140,6 +140,16 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activities.WidgetDigitalSecondsConfigureActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyWidgetConfigTheme">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".services.AlarmService"
             android:foregroundServiceType="specialUse">
@@ -217,6 +227,21 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_analogue_clock_info" />
+        </receiver>
+
+        <receiver
+            android:name=".helpers.MyDigitalTimeSecondsWidgetProvider"
+            android:exported="true"
+            android:label="@string/digital_clock_seconds">
+
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_ENABLED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_digital_seconds_clock_info" />
         </receiver>
 
         <receiver
